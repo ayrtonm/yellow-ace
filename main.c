@@ -129,19 +129,26 @@ int main() {
     init();
     enable_ram();
 
+    blink();
     select_ram_bank(0);
     uint16_t pong_offset = RAM_OFFSET + 0x20;
     for (uint16_t i = 0; i < PONG_LEN; i++) {
         write(pong_offset + i, pong[i]);
     }
 
+    blink();
+    blink();
     select_ram_bank(1);
     uint16_t trampoline_offset = RAM_OFFSET + 0x10C0;
     for (uint16_t i = 0; i < TRAMPOLINE_LEN; i++) {
         write(trampoline_offset + i, trampoline[i]);
     }
+    blink();
+    blink();
+    blink();
     write(RAM_OFFSET + BAG_DATA_OFFSET, 1);
     write(RAM_OFFSET + BAG_DATA_OFFSET + 1, 0x63);
+    write(RAM_OFFSET + BAG_DATA_OFFSET + 2, 0xFF);
     DDRD = READ_ALL;
     uint8_t checksum = 255;
     for (uint16_t i = CHECKSTART_OFFSET; i < CHECKSUM_OFFSET; i++) {
